@@ -5,17 +5,25 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{827E0CD3-B72D-47B6-A68D-7590B98EB39B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Customer.Domain", "src\Customer.Domain\Customer.Domain.csproj", "{953ACBDF-273E-4D86-9A32-A1CD16D8C614}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ControlePedidos.CustomerContext.Domain", "src\ControlePedidos.CustomerContext.Domain\ControlePedidos.CustomerContext.Domain.csproj", "{953ACBDF-273E-4D86-9A32-A1CD16D8C614}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Customer.Application", "src\Customer.Application\Customer.Application.csproj", "{3CD3A46F-20EF-4595-A0FD-4C9AA9C6D986}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ControlePedidos.CustomerContext.Application", "src\ControlePedidos.CustomerContext.Application\ControlePedidos.CustomerContext.Application.csproj", "{3CD3A46F-20EF-4595-A0FD-4C9AA9C6D986}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Customer.Infrastructure", "src\Customer.Infrastructure\Customer.Infrastructure.csproj", "{5C8D7F1C-F332-4A80-8D00-E5A8CAAE93CE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ControlePedidos.CustomerContext.Infrastructure", "src\ControlePedidos.CustomerContext.Infrastructure\ControlePedidos.CustomerContext.Infrastructure.csproj", "{5C8D7F1C-F332-4A80-8D00-E5A8CAAE93CE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Customer.Api", "src\Customer.Api\Customer.Api.csproj", "{E0CD27B3-56AA-454B-90B2-0812239AC540}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ControlePedidos.CustomerContext.Api", "src\ControlePedidos.CustomerContext.Api\ControlePedidos.CustomerContext.Api.csproj", "{E0CD27B3-56AA-454B-90B2-0812239AC540}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{0AB3BF05-4346-4AA6-1389-037BE0695223}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Customer.Tests", "tests\Customer.Tests\Customer.Tests.csproj", "{85DF0ED9-7C27-400A-82E8-D27DE05C4FEE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ControlePedidos.CustomerContext.Tests", "tests\ControlePedidos.CustomerContext.Tests\ControlePedidos.CustomerContext.Tests.csproj", "{85DF0ED9-7C27-400A-82E8-D27DE05C4FEE}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "adapters", "adapters", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "driver", "driver", "{119748E0-C82C-4C02-92A6-E88744A6D414}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "driven", "driven", "{7C9A17F3-AAAD-41C0-8EDE-1C0B3D248156}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "core", "core", "{7371B697-AB66-4F86-87FF-974CECFF9368}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -92,10 +100,17 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{953ACBDF-273E-4D86-9A32-A1CD16D8C614} = {827E0CD3-B72D-47B6-A68D-7590B98EB39B}
-		{3CD3A46F-20EF-4595-A0FD-4C9AA9C6D986} = {827E0CD3-B72D-47B6-A68D-7590B98EB39B}
-		{5C8D7F1C-F332-4A80-8D00-E5A8CAAE93CE} = {827E0CD3-B72D-47B6-A68D-7590B98EB39B}
-		{E0CD27B3-56AA-454B-90B2-0812239AC540} = {827E0CD3-B72D-47B6-A68D-7590B98EB39B}
+		{953ACBDF-273E-4D86-9A32-A1CD16D8C614} = {7371B697-AB66-4F86-87FF-974CECFF9368}
+		{3CD3A46F-20EF-4595-A0FD-4C9AA9C6D986} = {7371B697-AB66-4F86-87FF-974CECFF9368}
+		{5C8D7F1C-F332-4A80-8D00-E5A8CAAE93CE} = {7C9A17F3-AAAD-41C0-8EDE-1C0B3D248156}
+		{E0CD27B3-56AA-454B-90B2-0812239AC540} = {119748E0-C82C-4C02-92A6-E88744A6D414}
 		{85DF0ED9-7C27-400A-82E8-D27DE05C4FEE} = {0AB3BF05-4346-4AA6-1389-037BE0695223}
+		{02EA681E-C7D8-13C7-8484-4AC65E1B71E8} = {827E0CD3-B72D-47B6-A68D-7590B98EB39B}
+		{119748E0-C82C-4C02-92A6-E88744A6D414} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{7C9A17F3-AAAD-41C0-8EDE-1C0B3D248156} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{7371B697-AB66-4F86-87FF-974CECFF9368} = {827E0CD3-B72D-47B6-A68D-7590B98EB39B}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {085E3EE5-F949-4D70-B91A-724B51ACCC18}
 	EndGlobalSection
 EndGlobal

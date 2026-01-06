@@ -1,0 +1,31 @@
+services:
+  # 1. Banco de Dados
+  mysql-db:
+    image: mysql:8.0
+    container_name: mysql-customer-container
+    command: --default-authentication-plugin=mysql_native_password
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
+      - MYSQL_DATABASE=customer_db
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  # 2. Nossa API
+  customer-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: customer-api-container
+    ports:
+      - "8080:8080"
+    environment:
+      - ASPNETCORE_URLS=http://+:8080
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Server=mysql-db;Port=3306;Database=customer_db;Uid=root;Pwd=${DB_PASSWORD};SslMode=None;AllowPublicKeyRetrieval=True
+    depends_on:
+      - mysql-db
+
+volumes:
+  mysql_data:
