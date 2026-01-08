@@ -1,4 +1,5 @@
 ﻿using ControlePedidos.CustomerContext.Domain.Entities;
+using ControlePedidos.CustomerContext.Infrastructure.Config;
 using Microsoft.EntityFrameworkCore;
 
 namespace ControlePedidos.CustomerContext.Infrastructure.Repositories

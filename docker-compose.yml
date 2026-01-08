@@ -1,16 +1,16 @@
 services:
-  # 1. Banco de Dados
-  mysql-db:
-    image: mysql:8.0
-    container_name: mysql-customer-container
-    command: --default-authentication-plugin=mysql_native_password
+  # 1. Banco de Dados (PostgreSQL)
+  postgres-db:
+    image: postgres:latest
+    container_name: postgres-customer-container
     ports:
-      - "3306:3306"
+      - "5432:5432"
     environment:
-      - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
-      - MYSQL_DATABASE=customer_db
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=customer_db
     volumes:
-      - mysql_data:/var/lib/mysql
+      - postgres_data:/var/lib/postgresql
 
   # 2. Nossa API
   customer-api:
@@ -23,9 +23,9 @@ services:
     environment:
       - ASPNETCORE_URLS=http://+:8080
       - ASPNETCORE_ENVIRONMENT=Development
-      - ConnectionStrings__DefaultConnection=Server=mysql-db;Port=3306;Database=customer_db;Uid=root;Pwd=${DB_PASSWORD};SslMode=None;AllowPublicKeyRetrieval=True
+      - ConnectionStrings__DefaultConnection=Host=postgres-db;Port=5432;Database=customer_db;Username=postgres;Password=${DB_PASSWORD}
     depends_on:
-      - mysql-db
+      - postgres-db
 
 volumes:
-  mysql_data:
+  postgres_data:
