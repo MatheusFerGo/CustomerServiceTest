@@ -1,0 +1,8 @@
+coverage:
+  status:
+    project:
+      default:
+        target: 80%
+  ignore:
+    - "**/Migrations/**" # Ignora as pastas de Migrations
+    - "**/*Snapshot*"    # Ignora os Snapshots do EF Core
