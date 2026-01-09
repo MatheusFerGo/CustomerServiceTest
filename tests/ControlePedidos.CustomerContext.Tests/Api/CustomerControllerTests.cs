@@ -111,4 +111,48 @@ public class CustomersControllerTests : IClassFixture<IntegrationTestBase>
         updatedCustomer!.Cpf.Should().BeNull();
         updatedCustomer.Name.Should().Be("Matheus Fernandes");
     }
+
+    [Fact]
+    public async Task CreateCustomer_DeveRetornar400BadRequest_QuandoCpfForInvalido()
+    {
+        // ARRANGE
+        var command = new { cpf = "123", name = "Teste Erro", email = "erro@test.com" };
+
+        // ACT
+        var response = await _client.PostAsJsonAsync("/api/Customers/register", command);
+
+        // ASSERT
+        response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+        var content = await response.Content.ReadAsStringAsync();
+        content.Should().Contain("errors");
+    }
+
+    [Fact]
+    public async Task CreateCustomer_DeveRetornar409Conflict_QuandoEmailJaExistir()
+    {
+        // ARRANGE
+        var emailDuplicado = "duplicado@test.com";
+        var command1 = new { cpf = "11122233344", name = "Cliente 1", email = emailDuplicado };
+        await _client.PostAsJsonAsync("/api/Customers/register", command1);
+
+        var command2 = new { cpf = "99988877766", name = "Cliente 2", email = emailDuplicado };
+
+        // ACT
+        var response = await _client.PostAsJsonAsync("/api/Customers/register", command2);
+
+        // ASSERT
+        response.StatusCode.Should().Be(HttpStatusCode.Conflict);
+        var result = await response.Content.ReadAsStringAsync();
+        result.Should().Contain("já cadastrado");
+    }
+
+    [Fact]
+    public async Task GetByCpf_DeveRetornar404NotFound_QuandoCpfNaoExistir()
+    {
+        // ACT
+        var response = await _client.GetAsync("/api/Customers/cpf/00000000000");
+
+        // ASSERT
+        response.StatusCode.Should().Be(HttpStatusCode.NotFound);
+    }
 }
