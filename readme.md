@@ -1,5 +1,5 @@
 # 🍔 ControlePedidos - Customer Context
-[![codecov](https://codecov.io/gh/MatheusFerGo/ControlePedidos.Customer/graph/badge.svg?token=CODECOV_TOKEN)](https://codecov.io/gh/MatheusFerGo/CustomerServiceTest)
+[![codecov](https://codecov.io/gh/MatheusFerGo/CustomerServiceTest/branch/main/graph/badge.svg)](https://codecov.io/gh/MatheusFerGo/CustomerServiceTest)
 
 Este microsserviço é responsável pela **gestão e identificação de clientes** dentro do ecossistema **ControlePedidos**.  
 Ele foi construído pensando em **Clean Architecture**, **DDD** e **SOLID**, garantindo que a lógica de negócio seja **independente de infraestrutura**.
