@@ -9,8 +9,9 @@ public class CustomerValidator : AbstractValidator<Customer>
     public CustomerValidator()
     {
         RuleFor(c => c.Cpf)
-            .NotEmpty().WithMessage("O CPF não pode ser vazio.")
-            .Must(CpfValidator.IsValid).WithMessage("CPF inválido.");
+                    .Must(CpfValidator.IsValid)
+                    .When(c => !string.IsNullOrWhiteSpace(c.Cpf))
+                    .WithMessage("O CPF fornecido é inválido.");
 
         RuleFor(c => c.Name)
             .MaximumLength(100).WithMessage("O nome deve ter no máximo 100 caracteres.");

@@ -12,18 +12,24 @@ public class CustomerMap : IEntityTypeConfiguration<Customer>
 
         builder.HasKey(e => e.Id);
 
+        builder.Property(e => e.Cpf)
+               .IsRequired(false)
+               .HasMaxLength(11);
+
         builder.HasIndex(e => e.Cpf)
-               .IsUnique();
+               .IsUnique()
+               .HasFilter("\"Cpf\" IS NOT NULL");
 
         builder.Property(e => e.Name)
                .IsRequired(false)
                .HasMaxLength(150);
 
-        builder.HasIndex(e => e.Email)
-               .IsUnique();
-
         builder.Property(e => e.Email)
                .IsRequired(false)
                .HasMaxLength(150);
+
+        builder.HasIndex(e => e.Email)
+               .IsUnique()
+               .HasFilter("\"Email\" IS NOT NULL");
     }
 }

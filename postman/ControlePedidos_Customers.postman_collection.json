@@ -83,7 +83,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"name\": \"Matheus Silva\",\n    \"email\": \"matheus.editado@exemplo.com\"\n}",
+					"raw": "{\n    \"name\": \"Matheus Silva\",\n    \"email\": \"matheus@exemplo.com\",\n    \"cpf\": \"12345678901\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"

@@ -22,17 +22,31 @@ public class UpdateCustomerCommandHandler
         var customer = await _customerRepository.GetByIdAsync(command.Id);
         if (customer == null) return false;
 
-        if (!string.IsNullOrWhiteSpace(command.Email) && command.Email != customer.Email)
+        var cpfNormalizado = string.IsNullOrWhiteSpace(command.Cpf) ? null : command.Cpf;
+        var emailNormalizado = string.IsNullOrWhiteSpace(command.Email) ? null : command.Email;
+        var nameNormalizado = string.IsNullOrWhiteSpace(command.Name) ? null : command.Name;
+
+        if (cpfNormalizado != null && cpfNormalizado != customer.Cpf)
         {
-            var existingEmail = await _customerRepository.GetByEmailAsync(command.Email);
+            var existingCpf = await _customerRepository.GetByCpfAsync(cpfNormalizado);
+            if (existingCpf != null)
+            {
+                throw new Exception("Este CPF já está sendo utilizado por outro cliente.");
+            }
+        }
+
+        if (emailNormalizado != null && emailNormalizado != customer.Email)
+        {
+            var existingEmail = await _customerRepository.GetByEmailAsync(emailNormalizado);
             if (existingEmail != null)
             {
                 throw new Exception("Este email já está sendo utilizado por outro cliente.");
             }
         }
 
-        customer.Name = command.Name;
-        customer.Email = command.Email;
+        customer.Name = nameNormalizado;
+        customer.Email = emailNormalizado;
+        customer.Cpf = cpfNormalizado;
 
         var validationResult = await _customerValidator.ValidateAsync(customer);
         if (!validationResult.IsValid)

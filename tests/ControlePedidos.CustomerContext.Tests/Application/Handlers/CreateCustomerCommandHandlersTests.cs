@@ -17,7 +17,6 @@ namespace ControlePedidos.CustomerContext.Tests.Application.Handlers
 
         public CreateCustomerCommandHandlerTests()
         {
-            // ARRANGE (Configuração Padrão)
             _mockRepository = new Mock<ICustomerRepository>();
             _mockValidator = new Mock<IValidator<Customer>>();
 
@@ -27,10 +26,9 @@ namespace ControlePedidos.CustomerContext.Tests.Application.Handlers
             );
 
             _mockValidator.Setup(v => v.ValidateAsync(It.IsAny<Customer>(), It.IsAny<CancellationToken>()))
-                          .ReturnsAsync(new ValidationResult()); // Retorna sucesso
+                          .ReturnsAsync(new ValidationResult());
         }
 
-        // Teste 1: Caminho Feliz
         [Fact]
         public async Task HandleAsync_ShouldCreateCustomer_WhenCpfAndEmailAreUnique()
         {
@@ -57,54 +55,50 @@ namespace ControlePedidos.CustomerContext.Tests.Application.Handlers
             );
         }
 
-        // Teste 2: Falha por CPF Duplicado
         [Fact]
         public async Task HandleAsync_ShouldThrowException_WhenCpfAlreadyExists()
         {
             // ARRANGE
             var command = new CreateCustomerCommand("11111111111", "Test User", "test@test.com");
 
-            // Configura o mock do repositório para dizer que o CPF JÁ EXISTE
-            _mockRepository.Setup(r => r.GetByCpfAsync(command.Cpf))
-                           .ReturnsAsync(new Customer()); // Retorna um cliente (encontrado)
+            var cpfNormalizado = string.IsNullOrWhiteSpace(command.Cpf) ? null : command.Cpf;
+
+            _mockRepository.Setup(r => r.GetByCpfAsync(cpfNormalizado!))
+                           .ReturnsAsync(new Customer { Cpf = cpfNormalizado });
 
             // ACT
             Func<Task> act = async () => await _handler.HandleAsync(command);
 
             // ASSERT
-            // Verifica se a ação (act) lança uma Exceção
-            // com a mensagem de erro que esperamos.
             await act.Should().ThrowAsync<Exception>()
-                     .WithMessage("Cliente com este CPF já cadastrado.");
+                     .WithMessage("CPF já cadastrado.");
 
-            // Garante que o método CreateAsync NUNCA foi chamado
             _mockRepository.Verify(r => r.CreateAsync(It.IsAny<Customer>()), Times.Never);
         }
 
-        // Teste 3: Falha por Email Duplicado
         [Fact]
         public async Task HandleAsync_ShouldThrowException_WhenEmailAlreadyExists()
         {
             // ARRANGE
             var command = new CreateCustomerCommand("12345678901", "Test User", "test@test.com");
+            var emailNormalizado = string.IsNullOrWhiteSpace(command.Email) ? null : command.Email;
 
-            _mockRepository.Setup(r => r.GetByCpfAsync(command.Cpf))
-                           .ReturnsAsync((Customer)null); 
+            _mockRepository.Setup(r => r.GetByCpfAsync(It.IsAny<string>()))
+                           .ReturnsAsync((Customer?)null);
 
-            _mockRepository.Setup(r => r.GetByEmailAsync(command.Email))
-                           .ReturnsAsync(new Customer()); 
+            _mockRepository.Setup(r => r.GetByEmailAsync(emailNormalizado!))
+                           .ReturnsAsync(new Customer { Email = emailNormalizado });
 
             // ACT
             Func<Task> act = async () => await _handler.HandleAsync(command);
 
             // ASSERT
             await act.Should().ThrowAsync<Exception>()
-                     .WithMessage("Cliente com este Email já cadastrado.");
+                     .WithMessage("E-mail já cadastrado.");
 
             _mockRepository.Verify(r => r.CreateAsync(It.IsAny<Customer>()), Times.Never);
         }
 
-        // Teste 4: Falha por Validação (Formato Inválido)
         [Fact]
         public async Task HandleAsync_ShouldThrowValidationException_WhenValidatorFails()
         {

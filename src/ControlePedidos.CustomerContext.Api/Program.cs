@@ -4,10 +4,8 @@ using ControlePedidos.CustomerContext.Application.Queries.GetBatch;
 using ControlePedidos.CustomerContext.Application.Validators;
 using ControlePedidos.CustomerContext.Domain.Entities;
 using ControlePedidos.CustomerContext.Infrastructure.Config;
-using ControlePedidos.CustomerContext.Infrastructure.Repositories;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
-using System;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -40,3 +38,5 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+public partial class Program { }

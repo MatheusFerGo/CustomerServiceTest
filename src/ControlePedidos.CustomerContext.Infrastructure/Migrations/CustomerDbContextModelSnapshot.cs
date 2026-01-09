@@ -29,8 +29,8 @@ namespace ControlePedidos.CustomerContext.Infrastructure.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<string>("Cpf")
-                        .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(11)
+                        .HasColumnType("character varying(11)");
 
                     b.Property<string>("Email")
                         .HasMaxLength(150)
@@ -43,10 +43,12 @@ namespace ControlePedidos.CustomerContext.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("Cpf")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasFilter("\"Cpf\" IS NOT NULL");
 
                     b.HasIndex("Email")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasFilter("\"Email\" IS NOT NULL");
 
                     b.ToTable("Customers", (string)null);
                 });

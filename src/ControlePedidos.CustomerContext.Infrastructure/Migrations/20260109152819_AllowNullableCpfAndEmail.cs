@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace ControlePedidos.CustomerContext.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialPostgres : Migration
+    public partial class AllowNullableCpfAndEmail : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -18,7 +18,7 @@ namespace ControlePedidos.CustomerContext.Infrastructure.Migrations
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     Name = table.Column<string>(type: "character varying(150)", maxLength: 150, nullable: true),
                     Email = table.Column<string>(type: "character varying(150)", maxLength: 150, nullable: true),
-                    Cpf = table.Column<string>(type: "text", nullable: false)
+                    Cpf = table.Column<string>(type: "character varying(11)", maxLength: 11, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -29,13 +29,15 @@ namespace ControlePedidos.CustomerContext.Infrastructure.Migrations
                 name: "IX_Customers_Cpf",
                 table: "Customers",
                 column: "Cpf",
-                unique: true);
+                unique: true,
+                filter: "\"Cpf\" IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Customers_Email",
                 table: "Customers",
                 column: "Email",
-                unique: true);
+                unique: true,
+                filter: "\"Email\" IS NOT NULL");
         }
 
         /// <inheritdoc />

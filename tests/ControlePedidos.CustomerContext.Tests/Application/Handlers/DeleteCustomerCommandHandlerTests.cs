@@ -1,5 +1,4 @@
-﻿// Em: tests/ControlePedidos.CustomerContext.Tests/Application/Handlers/DeleteCustomerCommandHandlerTests.cs
-using Moq;
+﻿using Moq;
 using FluentAssertions;
 using ControlePedidos.CustomerContext.Application.Commands.Delete;
 
@@ -30,7 +29,6 @@ public class DeleteCustomerCommandHandlerTests
         var result = await _handler.HandleAsync(command);
 
         // ASSERT
-        // Verifica se o repositório foi chamado
         result.Should().BeTrue();
         _mockRepository.Verify(r => r.DeleteByIdAsync(customerId), Times.Once);
     }
@@ -49,7 +47,6 @@ public class DeleteCustomerCommandHandlerTests
         var result = await _handler.HandleAsync(command);
 
         // ASSERT
-        // Verifica se o resultado do handler é 'false'
         result.Should().BeFalse();
         _mockRepository.Verify(r => r.DeleteByIdAsync(customerId), Times.Once);
     }

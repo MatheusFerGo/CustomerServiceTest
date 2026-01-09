@@ -19,27 +19,27 @@ public class CreateCustomerCommandHandler
 
     public async Task<Customer> HandleAsync(CreateCustomerCommand command)
     {
-        var existingCustomer = await _customerRepository.GetByCpfAsync(command.Cpf);
-        if (existingCustomer != null)
+        var cpfNormalizado = string.IsNullOrWhiteSpace(command.Cpf) ? null : command.Cpf;
+        var emailNormalizado = string.IsNullOrWhiteSpace(command.Email) ? null : command.Email;
+
+        if (cpfNormalizado != null)
         {
-            throw new Exception("Cliente com este CPF já cadastrado.");
+            var existing = await _customerRepository.GetByCpfAsync(cpfNormalizado);
+            if (existing != null) throw new Exception("CPF já cadastrado.");
         }
 
-        if (!string.IsNullOrWhiteSpace(command.Email))
+        if (emailNormalizado != null)
         {
-            var existingEmail = await _customerRepository.GetByEmailAsync(command.Email);
-            if (existingEmail != null)
-            {
-                throw new Exception("Cliente com este Email já cadastrado.");
-            }
+            var existingEmail = await _customerRepository.GetByEmailAsync(emailNormalizado);
+            if (existingEmail != null) throw new Exception("E-mail já cadastrado.");
         }
 
         var customer = new Customer
         {
             Id = Guid.NewGuid(),
-            Cpf = command.Cpf,
+            Cpf = cpfNormalizado,
             Name = command.Name,
-            Email = command.Email
+            Email = emailNormalizado
         };
 
         var validationResult = await _customerValidator.ValidateAsync(customer);

@@ -91,7 +91,7 @@ public class CustomersController : ControllerBase
     [HttpPut("{id:guid}")]
     public async Task<IActionResult> UpdateCustomer(Guid id, [FromBody] UpdateCustomerRequest request)
     {
-        var command = new UpdateCustomerCommand(id, request.Name, request.Email);
+        var command = new UpdateCustomerCommand(id, request.Name, request.Email, request.Cpf);
         var result = await _updateHandler.HandleAsync(command);
 
         if (!result) return NotFound(new { message = "Cliente não encontrado." });
@@ -143,7 +143,6 @@ public class CustomersController : ControllerBase
         }
         catch (FluentValidation.ValidationException ex)
         {
-            // Evita o erro 500 da image_e226a8.png
             return BadRequest(new { erros = ex.Errors.Select(e => e.ErrorMessage) });
         }
         catch (Exception)
