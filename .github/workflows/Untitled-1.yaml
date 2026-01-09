@@ -1,0 +1,37 @@
+name: .NET CI & Coverage
+
+on:
+  push:
+    branches: [ "main", "develop", "feature/*" ]
+  pull_request:
+    branches: [ "main", "develop" ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Código
+      uses: actions/checkout@v4
+
+    - name: Setup .NET 9
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 9.x
+
+    - name: Restaurar Dependências
+      run: dotnet restore
+
+    - name: Build da Solução
+      run: dotnet build --no-restore --configuration Release
+
+    - name: Executar Testes e Coletar Cobertura
+      run: |
+        dotnet test --configuration Release --no-build --collect:"XPlat Code Coverage" -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover
+
+    - name: Upload para o Codecov
+      uses: codecov/codecov-action@v4
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
+        files: "**/TestResults/**/coverage.opencover.xml"
+        fail_ci_if_error: true

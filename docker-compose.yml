@@ -1,0 +1,31 @@
+services:
+  # 1. Banco de Dados (PostgreSQL)
+  postgres-db:
+    image: postgres:latest
+    container_name: postgres-customer-container
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=customer_db
+    volumes:
+      - postgres_data:/var/lib/postgresql
+
+  # 2. Nossa API
+  customer-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: customer-api-container
+    ports:
+      - "8080:8080"
+    environment:
+      - ASPNETCORE_URLS=http://+:8080
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Host=postgres-db;Port=5432;Database=customer_db;Username=postgres;Password=${DB_PASSWORD}
+    depends_on:
+      - postgres-db
+
+volumes:
+  postgres_data:

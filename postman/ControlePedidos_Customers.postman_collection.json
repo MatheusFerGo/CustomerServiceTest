@@ -1,0 +1,158 @@
+{
+	"info": {
+		"_postman_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+		"name": "ControlePedidos.CustomerContext",
+		"description": "Coleção para gestão de clientes - API .NET 9 com PostgreSQL",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Register Customer",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"Matheus Fernandes\",\n    \"email\": \"matheus@exemplo.com\",\n    \"cpf\": \"12345678901\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/api/Customers/register",
+					"host": ["{{baseUrl}}"],
+					"path": ["api", "Customers", "register"]
+				}
+			},
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('Status code é 201', function () { pm.response.to.have.status(201); });",
+							"var jsonData = pm.response.json();",
+							"if(jsonData.id) pm.environment.set('lastCustomerId', jsonData.id);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			]
+		},
+		{
+			"name": "Get All Customers",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/api/Customers",
+					"host": ["{{baseUrl}}"],
+					"path": ["api", "Customers"]
+				}
+			}
+		},
+		{
+			"name": "Get By ID",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/api/Customers/{{lastCustomerId}}",
+					"host": ["{{baseUrl}}"],
+					"path": ["api", "Customers", "{{lastCustomerId}}"]
+				}
+			}
+		},
+		{
+			"name": "Get By CPF",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/api/Customers/cpf/12345678901",
+					"host": ["{{baseUrl}}"],
+					"path": ["api", "Customers", "cpf", "12345678901"]
+				}
+			}
+		},
+		{
+			"name": "Update Customer",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"Matheus Silva\",\n    \"email\": \"matheus@exemplo.com\",\n    \"cpf\": \"12345678901\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/api/Customers/{{lastCustomerId}}",
+					"host": ["{{baseUrl}}"],
+					"path": ["api", "Customers", "{{lastCustomerId}}"]
+				}
+			}
+		},
+{
+			"name": "Get Batch (Object List)",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"items\": [\n    {\n      \"customerId\": \"{{lastCustomerId}}\"\n    },\n    {\n      \"customerId\": \"82796941-46b1-41cf-baa7-8e3dcb51579e\"\n    }\n  ]\n}",
+					"options": { "raw": { "language": "json" } }
+				},
+				"url": {
+					"raw": "{{baseUrl}}/api/Customers/batch",
+					"host": ["{{baseUrl}}"],
+					"path": ["api", "Customers", "batch"]
+				}
+			}
+		},
+		{
+			"name": "Delete Customer",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/api/Customers/{{lastCustomerId}}",
+					"host": ["{{baseUrl}}"],
+					"path": ["api", "Customers", "{{lastCustomerId}}"]
+				}
+			}
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [""]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [""]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:8080",
+			"type": "string"
+		},
+		{
+			"key": "lastCustomerId",
+			"value": "",
+			"type": "string"
+		}
+	]
+}
